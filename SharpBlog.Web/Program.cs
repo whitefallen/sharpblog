@@ -95,8 +95,15 @@ if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    await dbContext.Database.MigrateAsync();
-    await RoleSeeder.SeedAsync(scope.ServiceProvider);
+    var pendingMigrations = await dbContext.Database.GetPendingMigrationsAsync();
+    if (pendingMigrations.Any())
+    {
+        app.Logger.LogWarning("Pending EF Core migrations detected. Apply migrations before running the API.");
+    }
+    else
+    {
+        await RoleSeeder.SeedAsync(scope.ServiceProvider);
+    }
 }
 
 app.Run();
