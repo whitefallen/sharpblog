@@ -23,3 +23,5 @@ dotnet run --project SharpBlog.Web
 ```
 
 Swagger UI is available in development to explore the endpoints.
+
+> Note: Configure a strong JWT signing key (32+ characters) for non-development environments.

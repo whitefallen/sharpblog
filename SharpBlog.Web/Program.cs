@@ -46,6 +46,16 @@ builder.Services.AddProblemDetails();
 var jwtOptions = builder.Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>()
     ?? throw new InvalidOperationException("Jwt settings are missing.");
 
+if (!builder.Environment.IsDevelopment())
+{
+    if (string.IsNullOrWhiteSpace(jwtOptions.SigningKey) ||
+        jwtOptions.SigningKey == "ChangeThisInProduction_UseStrongKey" ||
+        jwtOptions.SigningKey.Length < 32)
+    {
+        throw new InvalidOperationException("Jwt signing key must be configured with a strong value.");
+    }
+}
+
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -81,8 +91,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
+if (app.Environment.IsDevelopment())
 {
+    using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await dbContext.Database.MigrateAsync();
     await RoleSeeder.SeedAsync(scope.ServiceProvider);
