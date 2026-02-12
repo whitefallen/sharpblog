@@ -25,3 +25,5 @@ dotnet run --project SharpBlog.Web
 Swagger UI is available in development to explore the endpoints.
 
 > Note: Configure a strong JWT signing key (32+ characters) for non-development environments.
+>
+> Note: In development, the API applies migrations and seeds roles on startup. Manage migrations separately in production.

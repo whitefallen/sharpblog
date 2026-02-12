@@ -49,7 +49,7 @@ var jwtOptions = builder.Configuration.GetSection(JwtOptions.SectionName).Get<Jw
 if (!builder.Environment.IsDevelopment())
 {
     if (string.IsNullOrWhiteSpace(jwtOptions.SigningKey) ||
-        jwtOptions.SigningKey == "ChangeThisInProduction_UseStrongKey" ||
+        jwtOptions.SigningKey == "REPLACE_WITH_SECURE_KEY_MIN_32_CHARS" ||
         jwtOptions.SigningKey.Length < 32)
     {
         throw new InvalidOperationException("Jwt signing key must be configured with a strong value.");
