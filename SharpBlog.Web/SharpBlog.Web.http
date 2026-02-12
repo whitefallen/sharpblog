@@ -1,0 +1,6 @@
+@SharpBlog.Web_HostAddress = http://localhost:5085
+
+GET {{SharpBlog.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
