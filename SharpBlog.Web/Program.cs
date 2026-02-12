@@ -46,10 +46,12 @@ builder.Services.AddProblemDetails();
 var jwtOptions = builder.Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>()
     ?? throw new InvalidOperationException("Jwt settings are missing.");
 
+const string DevelopmentSigningKey = "DevOnly_SharpBlog_SigningKey_1234567890abcdef";
+
 if (!builder.Environment.IsDevelopment())
 {
     if (string.IsNullOrWhiteSpace(jwtOptions.SigningKey) ||
-        jwtOptions.SigningKey == "REPLACE_WITH_SECURE_KEY_MIN_32_CHARS" ||
+        jwtOptions.SigningKey == DevelopmentSigningKey ||
         jwtOptions.SigningKey.Length < 32)
     {
         throw new InvalidOperationException("Jwt signing key must be configured with a strong value.");
