@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="SharpBlog.Application/SharpBlog.Application.csproj" />
+  <Project Path="SharpBlog.Domain/SharpBlog.Domain.csproj" />
+  <Project Path="SharpBlog.Infrastructure/SharpBlog.Infrastructure.csproj" />
+  <Project Path="SharpBlog.Web/SharpBlog.Web.csproj" />
+</Solution>
