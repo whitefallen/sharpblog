@@ -1,0 +1,22 @@
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Layout } from './components/Layout';
+import { HomePage } from './pages/HomePage';
+import { LoginPage } from './pages/LoginPage';
+import { NewPostPage } from './pages/NewPostPage';
+import { PostDetailPage } from './pages/PostDetailPage';
+import { RegisterPage } from './pages/RegisterPage';
+
+export function App() {
+  return (
+    <Layout>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/posts/:postId" element={<PostDetailPage />} />
+        <Route path="/new" element={<NewPostPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Layout>
+  );
+}

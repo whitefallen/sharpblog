@@ -8,3 +8,16 @@ obj/
 *.db-shm
 *.db-wal
 .vs/
+
+# Frontend (Node/Vite/TypeScript)
+SharpBlog.Frontend/node_modules/
+SharpBlog.Frontend/dist/
+SharpBlog.Frontend/.vite/
+SharpBlog.Frontend/.cache/
+SharpBlog.Frontend/*.tsbuildinfo
+SharpBlog.Frontend/npm-debug.log*
+SharpBlog.Frontend/yarn-debug.log*
+SharpBlog.Frontend/yarn-error.log*
+SharpBlog.Frontend/pnpm-debug.log*
+
+sharpblog.html

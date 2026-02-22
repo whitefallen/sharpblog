@@ -13,5 +13,33 @@ services:
       - sharpblog-data:/app/data
     restart: unless-stopped
 
+  frontend:
+    build:
+      context: .
+      dockerfile: SharpBlog.Frontend/Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - sharpblog
+    restart: unless-stopped
+
+  frontend-dev:
+    image: node:22-alpine
+    profiles:
+      - dev
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 5173"
+    environment:
+      - VITE_PROXY_TARGET=http://sharpblog:8080
+    volumes:
+      - ./SharpBlog.Frontend:/app
+      - sharpblog-frontend-node_modules:/app/node_modules
+    ports:
+      - "5173:5173"
+    depends_on:
+      - sharpblog
+    restart: unless-stopped
+
 volumes:
   sharpblog-data:
+  sharpblog-frontend-node_modules:
