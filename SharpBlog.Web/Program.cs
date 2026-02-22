@@ -86,26 +86,29 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Only use HTTPS redirection when not running in Docker/container
+if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ASPNETCORE_HTTPS_PORT")))
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-if (app.Environment.IsDevelopment())
+// Apply migrations and seed data
+using (var scope = app.Services.CreateScope())
 {
-    using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     var pendingMigrations = await dbContext.Database.GetPendingMigrationsAsync();
     if (pendingMigrations.Any())
     {
-        app.Logger.LogWarning("Pending EF Core migrations detected. Apply migrations before running the API.");
+        app.Logger.LogInformation("Applying {Count} pending EF Core migrations...", pendingMigrations.Count());
+        await dbContext.Database.MigrateAsync();
+        app.Logger.LogInformation("Migrations applied successfully.");
     }
-    else
-    {
-        await RoleSeeder.SeedAsync(scope.ServiceProvider);
-    }
+    await RoleSeeder.SeedAsync(scope.ServiceProvider);
 }
 
 app.Run();

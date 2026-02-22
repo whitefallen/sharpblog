@@ -1,0 +1,17 @@
+services:
+  sharpblog:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Data Source=/app/data/sharpblog.db
+      - Jwt__SigningKey=YourSuperSecretKeyThatIsAtLeast32CharactersLong!
+    volumes:
+      - sharpblog-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  sharpblog-data:
